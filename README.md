@@ -1,29 +1,56 @@
-## Gemma 3 4B Instruct before Fine-tuning
+## 📘 Overview
 
-**[Gemma before fine-tuning](./GemmaBeforeFineTuning.ipynb)** : deploy [Gemma 3 4B Instruct](https://huggingface.co/google/gemma-3-4b-it) to **Amazon SageMaker** then test prompt engineering with instruction of receipts extraction.
+This repository explains end-to-end fine-tuning Gemma 3-4B-Instruct model for receipt extraction use case that can extracting structured and accuracy information from receipt photo.
 
-**NOTE :** Choose **ml.g6.2xlarge** for Notebook instance type.
+## 📁 Repository Structure
 
-## Gemma 3 4B Instruct Fine-tuning process
+| File / Notebook | Description |
+| :--- | :--- |
+| `GemmaBeforeFineTuning.ipynb` | Notebook of deploy Gemma 3-4B-Instruct model and test upload several receipts to Gemma model before fine-tuning. |
+| `GemmaFineTuning.ipynb` | Notebook of fine-tuning Gemma 3-4B-Instruct model using PEFT (Parameter-Efficient Fine-Tuning) technique, LoRA (Low-Rank Adaptation) technique and SFT (Supervised Fine-Tuning) technique then export result of this fine-tuning model to HuggingFace model repository. |
+| `GemmaAfterFineTuning.ipynb` | Notebook of deploy fine-tuning model and test upload same receipts to fine-tuning model and see difference responses from receipts extraction before and after fine-tuning. |
+| `gokbbq.jpg`, `ovenfc.jpg` and `strongflour.jpg` | Sample photo file used in the `GemmaBeforeFineTuning.ipynb` and `GemmaFineTuning.ipynb`. |
 
-**[Gemma fine-tuning process](./GemmaFineTuning.ipynb)** : fine tuning [Gemma 3 4B Instruct](https://huggingface.co/google/gemma-3-4b-it) based [receipts extraction dataset](https://huggingface.co/datasets/cindyliang/receipts-v1) using PEFT and SFT (Supervised Fine-Tuning) technique then push fine-tuning model to HuggingFace model.
+## ✅ Prerequisites
 
-**NOTE :** Choose **ml.g6.2xlarge** for Notebook instance type.
+1.  **Amazon Web Services (AWS)**: Access to **Amazon SageMaker AI** features such as SageMaker Notebook Instance (Fine-tuning) and SageMaker Endpoint (Inference), you can sign up/sign in [here.](https://console.aws.amazon.com)
 
-## Gemma 3 4B Instruct after Fine-tuning
+**NOTE :** Ensure your AWS region have quota for **ml.g6.2xlarge** instance type for both Notebook instance usage and Endpoint usage. If want to request quota of instance type, you can see this [link.](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html) but if you don't want to use Amazon SageMaker, use Google Colab.
 
-**[Gemma after fine-tuning](./GemmaAfterFineTuning.ipynb)** : after fine tuning process is done, deploy [my Gemma fine tuning model](https://huggingface.co/budionosan/gemma-finetuning-receipts-extraction) to **Amazon SageMaker** then test prompt engineering with same instruction of receipts extraction.
+2. **Hugging Face**: Access to create access token, Gemma model and [this receipt dataset](https://huggingface.co/datasets/cindyliang/receipts-v1), you can sign up/sign in [here.](https://huggingface.co)
 
-**NOTE :** Choose **ml.g6.2xlarge** for Notebook instance type.
+## 🚀 Getting Started
 
-**NOTE :** Before try this repository, get Hugging Face token to can access Gemma 3 4B Instruct model and my fine-tuning model, then write Hugging Face token in Notepad such as **HUGGINGFACE_TOKEN = your_Hugging_Face_token** and save the token with format file name "env.txt".
+1. Clone this repository
+```bash
+git clone https://github.com/budionosanai/gemma-finetuning-receipts-extraction.git
+cd gemma-finetuning-receipts-extraction
+```
 
-**NOTE :** See different result of answer of receipt extraction between before fine-tuning and after fine-tuning then compare now.
+2. Request access to [Gemma 3-4B-Instruct](https://huggingface.co/google/gemma-3-4b-it) model and wait approval from Google.
 
-**Reference :**
+3. Open, run and following this notebooks :
 
-1. https://huggingface.co/docs/trl/sft_trainer#extending-sfttrainer-for-vision-language-models
+| Notebook | Using |
+| :--- | :--- |
+| 1 - **[Gemma before fine-tuning](./GemmaBeforeFineTuning.ipynb)** | **SageMaker Endpoint (Inference)** or **Google Colab** and [Gemma 3-4B-Instruct](https://huggingface.co/google/gemma-3-4b-it) |
+| 2 - **[Gemma fine-tuning process](./GemmaFineTuning.ipynb)** | **SageMaker Notebook Instance (Fine-tuning)** or **Google Colab** and [Gemma 3-4B-Instruct](https://huggingface.co/google/gemma-3-4b-it) |
+| 3 - **[Gemma after fine-tuning](./GemmaAfterFineTuning.ipynb)** | **SageMaker Endpoint (Inference)** or **Google Colab** and [Gemma fine tuning model](https://huggingface.co/budionosan/gemma-finetuning-receipts-extraction) |
 
-2. https://github.com/huggingface/trl/blob/main/examples/scripts/sft_vlm_gemma3.py
+4. Create Python environment variable using python-dotenv, you can see this [link.](https://pypi.org/project/python-dotenv/) then write Hugging Face token (e.g.  `HUGGINGFACE_TOKEN=your_token_here`) in a Notepad file, then save the file with the name `....txt` (e.g. `env.txt`). You can see this [link.](https://huggingface.co/docs/hub/en/security-tokens) to create HuggingFace token.
 
-3. https://huggingface.co/docs/trl/training_vlm_sft
+## ⚠️ Warning
+
+**Ensure securely API keys such as Hugging Face token — DO NOT HARDCORE them in notebooks.**
+
+## 📚 Resources
+
+* [Amazon SageMaker documentation](https://docs.aws.amazon.com/sagemaker/)
+* [SFT for Gemma 3 Script](https://github.com/huggingface/trl/blob/main/examples/scripts/sft_vlm_gemma3.py)
+* [PEFT documentation](https://huggingface.co/docs/peft/en/index)
+* [LoRA documentation](https://huggingface.co/docs/peft/main/en/conceptual_guides/lora/)
+* [SFT documentation 1](https://huggingface.co/docs/trl/sft_trainer#training-vision-language-models) and [SFT documentation 2](https://huggingface.co/docs/trl/main/en/training_vlm_sft)
+
+## 🙏 Acknowledgments
+
+**Amazon Web Services, Hugging Face, Google Gemma and Google Colab**
